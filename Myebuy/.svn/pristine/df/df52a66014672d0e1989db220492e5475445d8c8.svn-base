@@ -1,0 +1,22 @@
+package com.mage.service;
+
+import java.util.List;
+
+import com.mage.dao.ShoppingCarDao;
+import com.mage.po.ShoppingCarProduct;
+
+public class ShoppingCarService {
+	private ShoppingCarDao shoppingCarDao = new ShoppingCarDao();
+
+	/**
+	 * 根据用户id查询购物车的中的产品
+	 * @param userId
+	 */
+	public List<ShoppingCarProduct> findShoppingListByUid(int userId) {
+		return shoppingCarDao.findShoppingListByUid(userId);
+		
+	}
+	
+	
+
+}

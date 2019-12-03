@@ -1,0 +1,32 @@
+package com.mage.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.mage.dao.ProductDao;
+import com.mage.po.Product;
+
+public class ProductService {
+private ProductDao productdao =new ProductDao();
+	public List<Product> productList(String typeid) {
+		//判断是否为空
+		if(typeid==null) {
+			return null;
+		}
+		//调用dao层方法获得数据集合
+		List<Product> productList = new ArrayList();
+		productList=productdao.queryProduct(typeid);
+		return productList;
+	}
+	public List<Product> smallTypeList(String typeid) {
+		// 判断是否为空
+		if (typeid == null) {
+			return null;
+		}
+		// 调用dao层方法获得数据集合
+		List<Product> productList = new ArrayList();
+		productList = productdao.querysmallType(typeid);
+		return productList;
+	}
+
+}

@@ -1,0 +1,36 @@
+package com.mage.servlet;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.mage.po.BigType;
+import com.mage.service.InitService;
+
+/**
+ * Servlet implementation class InitServlet
+ */
+@WebServlet("/index")
+public class InitServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	private InitService initService = new InitService();
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//获取大类型列表
+		List<BigType> bigTypeList=new ArrayList<>();
+		bigTypeList=initService.querybigType();
+		//将数据集合存到域对象
+		request.getSession().setAttribute("bigTypeList", bigTypeList);
+		//请求转发到首页
+		request.getRequestDispatcher("index.jsp").forward(request, response);
+		
+		
+	}
+
+}

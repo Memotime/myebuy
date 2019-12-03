@@ -1,0 +1,26 @@
+package com.mage.po;
+
+public class BigType {
+	private Integer id;//id
+	private String name;//名称
+	private String remarks;//备注
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getRemarks() {
+		return remarks;
+	}
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+	
+}

@@ -1,0 +1,81 @@
+package com.mage.servlet;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.mage.po.User;
+import com.mage.po.vo.ResultInfo;
+import com.mage.service.UserService;
+
+@WebServlet("/user")
+public class UserServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//接收参数，判断执行事务
+		String actionName = request.getParameter("actionName");
+		if("login".equals(actionName)) {
+			//登录功能
+			login(request,response);
+		}else if("logout".equals(actionName)) {
+			//注销
+			logout(request,response);
+		}
+	}
+	/**
+	 * 注销
+	 * @param request
+	 * @param response
+	 * @throws IOException 
+	 */
+	private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		// 清除Session
+		request.getSession().invalidate();
+		// 清除Cookie
+		Cookie cookie = new Cookie("user", null);
+		cookie.setMaxAge(0);
+		// 重定向到登录界面
+		response.sendRedirect("login.jsp");
+		
+	}
+	/**
+	 * 登录功能
+	 * @param request
+	 * @param response
+	 * @throws IOException 
+	 * @throws ServletException 
+	 */
+	private void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// 接收参数
+		String uname = request.getParameter("uname");
+		String upwd = request.getParameter("upwd");
+		//调用service方法获取结果信息
+		UserService userService = new UserService();
+		ResultInfo<User> result = userService.login(uname, upwd);
+		if(result.getCode()==1) {
+			//登录成功，存session，存cookie
+			User user=result.getResult();
+			request.getSession().setAttribute("user", user);
+			
+			String rem=request.getParameter("rem");
+			if("1".equals(rem)) {
+				Cookie cookie=new Cookie("user", uname+"-"+upwd);
+				cookie.setMaxAge(7*24*60*60);
+				response.addCookie(cookie);
+			}
+			
+			response.sendRedirect("index.jsp");
+		}else {
+			//失败，将信息存储到作用域中
+			request.setAttribute("result", result);
+			//请求转发到登录界面
+			request.getRequestDispatcher("login.jsp").forward(request, response);
+		}
+	}
+
+}

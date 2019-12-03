@@ -1,0 +1,118 @@
+package com.mage.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.mage.po.Product;
+import com.mage.util.DBUtil;
+
+public class ProductDao {
+
+	public List<Product> queryProduct(String typeid) {
+		// 查询数据库
+		Connection conn = null;
+		PreparedStatement sta = null;
+		ResultSet res = null;
+		List<Product> productList = new ArrayList<>();
+		try {
+			conn = DBUtil.getConnection();
+			String sql = "select * from t_product where bigTypeId = ?";
+			sta = conn.prepareStatement(sql);
+			sta.setInt(1, Integer.parseInt(typeid));
+			// 执行编译，获取结果集
+			res = sta.executeQuery();
+			while (res.next()) {
+				Product pro = new Product();
+				pro.setId(res.getInt("id"));
+				pro.setName(res.getString("name"));
+				pro.setDescription(res.getString("description"));
+				pro.setHot(res.getInt("hot"));
+				pro.setHotTime(res.getDate("hotTime"));
+				pro.setPrice(res.getInt("price"));
+				pro.setProPic(res.getString("proPic"));
+				pro.setSpecialPrice(res.getInt("specialPrice"));
+				pro.setSpecialPriceTime(res.getDate("specialPriceTime"));
+				pro.setStock(res.getInt("stock"));
+				pro.setBigTypeid(res.getInt("bigTypeId"));
+				pro.setSmallTypeid(res.getInt("smallTypeId"));
+				productList.add(pro);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return productList;
+	}
+
+	public List<Product> querysmallType(String typeid) {
+		// 查询数据库
+		Connection conn = null;
+		PreparedStatement sta = null;
+		ResultSet res = null;
+		List<Product> productList = new ArrayList<>();
+		try {
+			conn = DBUtil.getConnection();
+			String sql = "select * from t_product where smallTypeId = ?";
+			sta = conn.prepareStatement(sql);
+			sta.setInt(1, Integer.parseInt(typeid));
+			// 执行编译，获取结果集
+			res = sta.executeQuery();
+			while (res.next()) {
+				Product pro = new Product();
+				pro.setId(res.getInt("id"));
+				pro.setName(res.getString("name"));
+				pro.setDescription(res.getString("description"));
+				pro.setHot(res.getInt("hot"));
+				pro.setHotTime(res.getDate("hotTime"));
+				pro.setPrice(res.getInt("price"));
+				pro.setProPic(res.getString("proPic"));
+				pro.setSpecialPrice(res.getInt("specialPrice"));
+				pro.setSpecialPriceTime(res.getDate("specialPriceTime"));
+				pro.setStock(res.getInt("stock"));
+				pro.setBigTypeid(res.getInt("bigTypeId"));
+				pro.setSmallTypeid(res.getInt("smallTypeId"));
+				productList.add(pro);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return productList;
+	}
+
+	public Product querysproduct(String productid) {
+		// 查询数据库
+		Connection conn = null;
+		PreparedStatement sta = null;
+		ResultSet res = null;
+		Product pro = null;
+		try {
+			conn = DBUtil.getConnection();
+			String sql = "select * from t_product where id = ?";
+			sta = conn.prepareStatement(sql);
+			sta.setInt(1, Integer.parseInt(productid));
+			// 执行编译，获取结果集
+			res = sta.executeQuery();
+			while (res.next()) {
+				pro = new Product();
+				pro.setId(res.getInt("id"));
+				pro.setName(res.getString("name"));
+				pro.setDescription(res.getString("description"));
+				pro.setHot(res.getInt("hot"));
+				pro.setHotTime(res.getDate("hotTime"));
+				pro.setPrice(res.getInt("price"));
+				pro.setProPic(res.getString("proPic"));
+				pro.setSpecialPrice(res.getInt("specialPrice"));
+				pro.setSpecialPriceTime(res.getDate("specialPriceTime"));
+				pro.setStock(res.getInt("stock"));
+				pro.setBigTypeid(res.getInt("bigTypeId"));
+				pro.setSmallTypeid(res.getInt("smallTypeId"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return pro;
+	}
+
+}

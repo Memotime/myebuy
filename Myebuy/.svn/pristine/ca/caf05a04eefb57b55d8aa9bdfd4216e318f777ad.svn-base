@@ -1,0 +1,69 @@
+package com.mage.servlet;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.mage.po.ShoppingCarProduct;
+import com.mage.service.ShoppingCarService;
+
+/**
+ * 购物车管理
+ */
+@WebServlet("/shopping")
+public class ShoppingServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	private ShoppingCarService shoppingCarService = new ShoppingCarService();
+
+	
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//获取用户行为
+		String actionName = request.getParameter("actionName");
+		//判断行为
+		if("shoppingListByUid".equals(actionName)) {
+			findShoppingListByUid(request,response);
+			return;
+		}
+	}
+
+
+	/**
+	 * 根据用户id查询购物车的中的产品
+	 * @param request
+	 * @param response
+	 */
+	private void findShoppingListByUid(HttpServletRequest request, HttpServletResponse response) {
+		// 获取用户id
+		//User user = (User)request.getParameter("user");
+		//int userId = user.getId();
+		int userId = 1;
+		
+		//调用service层  返回购物车中的产品信息列表
+		List<ShoppingCarProduct> shoppingCarProductList = shoppingCarService.findShoppingListByUid(userId);
+		
+		//将数据存到session域对象中
+		HttpSession session = request.getSession();
+		session.setAttribute("shoppingCarProductList", shoppingCarProductList);;
+		
+		//跳转融合页面
+		String mainPage = "shopping/shopping.jsp";
+		//存储信息
+		request.setAttribute("mainPage", mainPage);
+		//请求转发
+		try {
+			request.getRequestDispatcher("/shoppingMain.jsp").forward(request, response);
+		} catch (ServletException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	
+	}
+
+}

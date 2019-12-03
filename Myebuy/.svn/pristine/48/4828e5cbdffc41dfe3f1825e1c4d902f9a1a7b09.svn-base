@@ -1,0 +1,40 @@
+package com.mage.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.mage.dao.OrderDao;
+import com.mage.po.Order;
+import com.mage.po.OrderProduct;
+import com.mage.po.ShoppingCarProduct;
+import com.mage.po.User;
+
+public class OrderService {
+	OrderDao orderDao = new OrderDao();
+
+	/**
+	 * 增加订单
+	 * @param order
+	 * @return
+	 */
+	public int subOarder(Order order) {
+		long row = orderDao.addOrder(order);
+		//判断是否增加成功
+		if(row==0) {
+			return 0;
+		}else {
+			return orderDao.findOrderIdByOrderNo(order.getOrderNo());
+		}
+	}
+
+	/**
+	 * 
+	 * 根据用户id查找订单集合
+	 * @param id
+	 * @return
+	 */
+	public List<Order> findOrderList(int userId) {
+		return orderDao.findOrderListByUserId(userId);
+	}
+
+}
